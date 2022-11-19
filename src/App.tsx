@@ -1,13 +1,13 @@
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { 
-    UnsafeBurnerWalletAdapter,
-    PhantomWalletAdapter
- } from '@solana/wallet-adapter-wallets';
+import { UnsafeBurnerWalletAdapter, PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useMemo } from 'react';
 import Dashboard from './Pages/Dashboard';
+import * as buffer from 'buffer';
+
+window.Buffer = buffer.Buffer;
 
 require('./App.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -15,7 +15,7 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 const App: FC = () => {
     return (
         <Context>
-            <Dashboard/>
+            <Dashboard />
         </Context>
     );
 };
@@ -23,7 +23,7 @@ export default App;
 
 const Context: FC<{ children: ReactNode }> = ({ children }) => {
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-    const network = WalletAdapterNetwork.Devnet;
+    const network = WalletAdapterNetwork.Mainnet;
 
     // You can also provide a custom RPC endpoint.
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
@@ -43,7 +43,7 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
              * in the npm package `@solana/wallet-adapter-wallets`.
              */
             new UnsafeBurnerWalletAdapter(),
-            new PhantomWalletAdapter()
+            new PhantomWalletAdapter(),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [network]
@@ -57,4 +57,3 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
         </ConnectionProvider>
     );
 };
-
